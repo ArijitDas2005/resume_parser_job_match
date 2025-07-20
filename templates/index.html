@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Parser & Job Matcher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f7f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      margin: 50px auto;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 700px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input[type="file"], textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .results {
+      margin-top: 30px;
+      padding: 20px;
+      background: #e9f7ef;
+      border-left: 6px solid #28a745;
+      border-radius: 8px;
+    }
+
+    .score {
+      font-size: 22px;
+      font-weight: bold;
+      color: #28a745;
+    }
+
+    .section-title {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .skill-badge {
+      background: #007bff;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📄 Resume Parser & Job Match</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <label for="resume">Upload Resume (PDF)</label>
+      <input type="file" name="resume" required>
+
+      <label for="job_desc">Paste Job Description</label>
+      <textarea name="job_desc" rows="8" placeholder="Paste job description here..." required></textarea>
+
+      <button type="submit">🔍 Analyze</button>
+    </form>
+
+    {% if score is not none %}
+      <div class="results">
+        <div class="score">Match Score: {{ score }}%</div>
+        
+        <div class="section-title">Extracted Skills:</div>
+        <div class="skill-list">
+          {% for skill in resume.skills %}
+            <div class="skill-badge">{{ skill }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="section-title">Resume Preview:</div>
+        <p>{{ resume.raw_text }}</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
